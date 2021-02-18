@@ -70,4 +70,50 @@ describe('MenuService', () => {
       expect(updatedMenu.items[existingCategoryName]).toBeUndefined()
     })
   })
+
+  describe('#moveCategoryBack', () => {
+    beforeEach(async () => {
+      const threeCategories: IMenu = {
+        categories: ['first', 'second', 'third'],
+        items: { first: [], second: [], third: [] }
+      }
+      await createMockMenu(threeCategories)
+    })
+    it('moves the requested category one place back in the category array', async () => {
+      await service.moveCategoryBack('second')
+
+      const updatedMenu = await readMockMenu()
+      expect(updatedMenu.categories).toEqual(['second', 'first', 'third'])
+    })
+
+    it('has no effect if category is already the first one', async () => {
+      await service.moveCategoryBack('first')
+
+      const updatedMenu = await readMockMenu()
+      expect(updatedMenu.categories).toEqual(['first', 'second', 'third'])
+    })
+  })
+
+  describe('#moveCategoryForward', () => {
+    beforeEach(async () => {
+      const threeCategories: IMenu = {
+        categories: ['first', 'second', 'third'],
+        items: { first: [], second: [], third: [] }
+      }
+      await createMockMenu(threeCategories)
+    })
+    it('moves the requested category one place forward in the category array', async () => {
+      await service.moveCategoryForward('second')
+
+      const updatedMenu = await readMockMenu()
+      expect(updatedMenu.categories).toEqual(['first', 'third', 'second'])
+    })
+
+    it('has no effect if category is already the last one', async () => {
+      await service.moveCategoryForward('third')
+
+      const updatedMenu = await readMockMenu()
+      expect(updatedMenu.categories).toEqual(['first', 'second', 'third'])
+    })
+  })
 })

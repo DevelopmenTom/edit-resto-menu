@@ -39,6 +39,42 @@ export class MenuService {
     await this.saveMenuToFile(updatedMenu)
   }
 
+  public async moveCategoryBack(categoryToMove: string): Promise<void> {
+    const currentMenu = await this.fetchMenuFromFile()
+
+    const indexOfCategoryToMove = currentMenu.categories.indexOf(categoryToMove)
+
+    if (indexOfCategoryToMove === 0) {
+      return
+    }
+
+    currentMenu.categories.splice(
+      indexOfCategoryToMove - 1,
+      0,
+      currentMenu.categories.splice(indexOfCategoryToMove, 1)[0]
+    )
+
+    await this.saveMenuToFile(currentMenu)
+  }
+
+  public async moveCategoryForward(categoryToMove: string): Promise<void> {
+    const currentMenu = await this.fetchMenuFromFile()
+
+    const indexOfCategoryToMove = currentMenu.categories.indexOf(categoryToMove)
+
+    if (indexOfCategoryToMove === currentMenu.categories.length - 1) {
+      return
+    }
+
+    currentMenu.categories.splice(
+      indexOfCategoryToMove + 1,
+      0,
+      currentMenu.categories.splice(indexOfCategoryToMove, 1)[0]
+    )
+
+    await this.saveMenuToFile(currentMenu)
+  }
+
   private async fetchMenuFromFile(): Promise<IMenu> {
     const mockMenuJSON = await fs.promises.readFile(
       join(process.cwd(), 'src', 'menu', 'assets', process.env.MENU_FILENAME),
