@@ -52,7 +52,7 @@ describe('AppController (e2e)', () => {
 
     it('gets 401 when token expired', async () => {
       const expiredToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjowLCJpYXQiOjE2MTM1OTQ2NzEsImV4cCI6MTYxMzU5NDY3NH0.WMOHxmK0SchSfQzGOo97fUSZu8c3NlEVUQ-eyrtB63A'
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjowLCJpYXQiOjE2MTM2NzQwMjEsImV4cCI6MTYxMzY3NzYyMX0.sqmMfTpyu0TVLeMuRZQ4nKeR57BhZ6N0xpwu46MbJYQ'
       await request(app.getHttpServer())
         .post('/menu/category')
         .set('Authorization', `bearer ${expiredToken}`)
