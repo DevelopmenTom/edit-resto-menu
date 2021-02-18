@@ -17,7 +17,7 @@ export class MenuService {
 
     const updatedMenu: IMenu = {
       categories: [...currentMenu.categories, newCategoryName],
-      items: { ...currentMenu.items, newCategoryName: [] }
+      items: { ...currentMenu.items, [newCategoryName]: [] }
     }
 
     await this.saveMenuToFile(updatedMenu)
