@@ -13,9 +13,7 @@ import { JwtPayload, Role } from './interfaces/jwt.payload'
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  public async login(
-    loginDto: LoginDto
-  ): Promise<any | { status: number; message: string }> {
+  public async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
     const passwordIsValid = bcrypt.compareSync(
       loginDto.password,
       process.env.ADMIN_PASS
