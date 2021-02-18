@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpStatus,
@@ -16,7 +17,7 @@ export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @Get('/')
-  async getMenu(@Res() res: Response) {
+  public async getMenu(@Res() res: Response) {
     return res
       .status(HttpStatus.OK)
       .json(await this.menuService.fetchMenuFromFile())
@@ -24,7 +25,12 @@ export class MenuController {
 
   @UseGuards(JWTGuard)
   @Post('category')
-  addCategory(@Res() res: Response) {
-    return res.status(HttpStatus.CREATED).json({ result: 'category created' })
+  public async addCategory(
+    @Body() { newCategoryName }: { newCategoryName: string },
+    @Res() res: Response
+  ) {
+    await this.menuService.addCategory(newCategoryName)
+    const updatedMenu = await this.menuService.fetchMenuFromFile()
+    return res.status(HttpStatus.CREATED).json(updatedMenu.categories)
   }
 }

@@ -5,6 +5,7 @@ import { join } from 'path'
 import * as request from 'supertest'
 
 import { AppModule } from './app.module'
+import { createMockMenu } from './menu/testHelpers/createMockMenu'
 
 describe('AppController (e2e)', () => {
   let app
@@ -24,18 +25,24 @@ describe('AppController (e2e)', () => {
     await app.init()
   })
 
+  const getToken = async () => {
+    const correctPassFromTestEnv = '12345'
+    const response = await request(app.getHttpServer())
+      .post('/login')
+      .send({ password: correctPassFromTestEnv })
+      .expect(201)
+
+    const token = response.body.accessToken
+    return token
+  }
+
   describe('/login (POST)', () => {
     it('returns 400 when not supplied with password in request body', async () => {
       await request(app.getHttpServer()).post('/login').expect(400)
     })
     it('returns an accessToken when supplied with the correct password', async () => {
-      const correctPassFromTestEnv = '12345'
-      const response = await request(app.getHttpServer())
-        .post('/login')
-        .send({ password: correctPassFromTestEnv })
-        .expect(201)
-
-      expect(response.text.includes('accessToken')).toBe(true)
+      const token = await getToken()
+      expect(token).toBeDefined()
     })
   })
 
@@ -57,6 +64,23 @@ describe('AppController (e2e)', () => {
         .post('/menu/category')
         .set('Authorization', `bearer ${expiredToken}`)
         .expect(401)
+    })
+
+    it('gets 201 and an updated list of categories when everything went alright', async () => {
+      await createMockMenu()
+      const token = await getToken()
+
+      const response = await request(app.getHttpServer())
+        .post('/menu/category')
+        .send({ newCategoryName: 'newCatgory' })
+        .set('Authorization', `bearer ${token}`)
+        .expect(201)
+
+      expect(JSON.parse(response.text)).toEqual([
+        'firstCategory',
+        'secondCategory',
+        'newCatgory'
+      ])
     })
   })
 })
