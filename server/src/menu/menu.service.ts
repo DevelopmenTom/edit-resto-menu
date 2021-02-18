@@ -10,12 +10,30 @@ export class MenuService {
     const currentMenu = await this.fetchMenuFromFile()
 
     if (currentMenu.categories.includes(newCategoryName)) {
-      throw new HttpException('category already exists in menu', 401)
+      throw new HttpException('category already exists in menu', 400)
     }
 
     const updatedMenu: IMenu = {
       categories: [...currentMenu.categories, newCategoryName],
       items: { ...currentMenu.items, newCategoryName: [] }
+    }
+
+    await this.saveMenuToFile(updatedMenu)
+  }
+
+  public async removeCategoey(categoryToRemove: string): Promise<void> {
+    const currentMenu = await this.fetchMenuFromFile()
+    if (currentMenu.categories.length === 1) {
+      throw new HttpException('cannot remove the last category', 400)
+    }
+
+    delete currentMenu.items[categoryToRemove]
+
+    const updatedMenu: IMenu = {
+      categories: currentMenu.categories.filter(
+        (category) => category !== categoryToRemove
+      ),
+      items: currentMenu.items
     }
 
     await this.saveMenuToFile(updatedMenu)
