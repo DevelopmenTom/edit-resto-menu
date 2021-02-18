@@ -168,7 +168,7 @@ export class MenuService {
     await this.saveMenuToFile(currentMenu)
   }
 
-  private async fetchMenuFromFile(): Promise<IMenu> {
+  public async fetchMenuFromFile(): Promise<IMenu> {
     const mockMenuJSON = await fs.promises.readFile(
       join(process.cwd(), 'src', 'menu', 'assets', process.env.MENU_FILENAME),
       'utf8'

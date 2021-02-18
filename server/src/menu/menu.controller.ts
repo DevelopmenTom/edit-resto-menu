@@ -9,14 +9,17 @@ import {
 import { Response } from 'express'
 
 import { JWTGuard } from '../auth/jwt.guard'
+import { MenuService } from './menu.service'
 
 @Controller('menu')
 export class MenuController {
+  constructor(private readonly menuService: MenuService) {}
+
   @Get('/')
-  getMenu(@Res() res: Response) {
+  async getMenu(@Res() res: Response) {
     return res
       .status(HttpStatus.OK)
-      .json({ categories: ['burger', 'sides', 'deserts', 'drinks'] })
+      .json(await this.menuService.fetchMenuFromFile())
   }
 
   @UseGuards(JWTGuard)
