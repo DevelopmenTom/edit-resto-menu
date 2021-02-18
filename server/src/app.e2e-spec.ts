@@ -50,8 +50,10 @@ describe('AppController (e2e)', () => {
   })
 
   describe('/menu (Get)', () => {
-    it('gets a 200', async () => {
-      await request(app.getHttpServer()).get('/menu').expect(200)
+    it('gets a 200 and the menu in body of response', async () => {
+      const res = await request(app.getHttpServer()).get('/menu').expect(200)
+      const menu = JSON.parse(res.text)
+      expect(menu).toBeDefined()
     })
   })
 
