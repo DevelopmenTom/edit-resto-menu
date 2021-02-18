@@ -5,9 +5,12 @@ import { join } from 'path'
 import * as request from 'supertest'
 
 import { AppModule } from './app.module'
+import { ChangeItemDto } from './menu/dto/changeItem.dto'
+import { NewItemDto } from './menu/dto/newItem.dto'
 import {
   createMockMenu,
-  existingCategoryName
+  existingCategoryName,
+  existingItemName
 } from './menu/testHelpers/createMockMenu'
 
 describe('AppController (e2e)', () => {
@@ -138,6 +141,116 @@ describe('AppController (e2e)', () => {
       expect(JSON.parse(response.text)).toEqual([
         'secondCategory',
         'firstCategory'
+      ])
+    })
+  })
+
+  describe('/menu/item (Post)', () => {
+    it('gets 201 and a list of category items including the new item', async () => {
+      await createMockMenu()
+      const token = await getToken()
+
+      const newItem: NewItemDto = {
+        category: existingCategoryName,
+        description: 'is super new',
+        name: 'newItem!',
+        price: '123'
+      }
+
+      const response = await request(app.getHttpServer())
+        .post('/menu/item')
+        .send(newItem)
+        .set('Authorization', `bearer ${token}`)
+        .expect(201)
+
+      expect(
+        JSON.parse(response.text).filter((item) => item.name === newItem.name)
+      ).toHaveLength(1)
+    })
+  })
+
+  describe('/menu/item (Delete)', () => {
+    it('gets 200 and a list of category items without the removed item', async () => {
+      await createMockMenu()
+      const token = await getToken()
+
+      const itemToRemove: ChangeItemDto = {
+        category: existingCategoryName,
+        name: existingItemName
+      }
+
+      const response = await request(app.getHttpServer())
+        .delete('/menu/item')
+        .send(itemToRemove)
+        .set('Authorization', `bearer ${token}`)
+        .expect(200)
+
+      expect(
+        JSON.parse(response.text).filter(
+          (item) => item.name === itemToRemove.name
+        )
+      ).toHaveLength(0)
+    })
+  })
+
+  describe('/menu/item/moveItemUp (PUT)', () => {
+    it('gets 200 and a list of category items without the removed item', async () => {
+      await createMockMenu({
+        categories: [existingCategoryName],
+        items: {
+          [existingCategoryName]: [
+            { description: 'the first item!', name: 'firstItem', price: '1' },
+            { description: 'the second item!', name: 'secondItem', price: '2' }
+          ]
+        }
+      })
+      const token = await getToken()
+
+      const itemToMove: ChangeItemDto = {
+        category: existingCategoryName,
+        name: 'secondItem'
+      }
+
+      const response = await request(app.getHttpServer())
+        .put('/menu/item/moveItemUp')
+        .send(itemToMove)
+        .set('Authorization', `bearer ${token}`)
+        .expect(200)
+
+      expect(JSON.parse(response.text)).toEqual([
+        { description: 'the second item!', name: 'secondItem', price: '2' },
+        { description: 'the first item!', name: 'firstItem', price: '1' }
+      ])
+    })
+  })
+
+  describe('/menu/item/moveItemDown (PUT)', () => {
+    it('gets 200 and a list of category items without the removed item', async () => {
+      await createMockMenu({
+        categories: [existingCategoryName],
+        items: {
+          [existingCategoryName]: [
+            { description: 'the first item!', name: 'firstItem', price: '1' },
+            { description: 'the second item!', name: 'secondItem', price: '2' }
+          ]
+        }
+      })
+      const token = await getToken()
+
+      const itemToMove: ChangeItemDto = {
+        category: existingCategoryName,
+        name: 'firstItem'
+      }
+
+      const response = await request(app.getHttpServer())
+        .put('/menu/item/moveItemDown')
+        .send(itemToMove)
+        .set('Authorization', `bearer ${token}`)
+        .expect(200)
+
+      expect(JSON.parse(response.text)).toEqual([
+        { description: 'the second item!', name: 'secondItem', price: '2' },
+        { description: 'the first item!', name: 'firstItem', price: '1' }
       ])
     })
   })

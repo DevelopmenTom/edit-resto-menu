@@ -12,6 +12,8 @@ import {
 import { Response } from 'express'
 
 import { JWTGuard } from '../auth/jwt.guard'
+import { ChangeItemDto } from './dto/changeItem.dto'
+import { NewItemDto } from './dto/newItem.dto'
 import { MenuService } from './menu.service'
 
 @Controller('menu')
@@ -67,5 +69,54 @@ export class MenuController {
     await this.menuService.moveCategoryBack(categoryToMove)
     const updatedMenu = await this.menuService.fetchMenuFromFile()
     return res.status(HttpStatus.OK).json(updatedMenu.categories)
+  }
+
+  @UseGuards(JWTGuard)
+  @Post('item')
+  public async addItem(@Body() newItem: NewItemDto, @Res() res: Response) {
+    await this.menuService.addItem(newItem)
+    const updatedMenu = await this.menuService.fetchMenuFromFile()
+    return res
+      .status(HttpStatus.CREATED)
+      .json(updatedMenu.items[newItem.category])
+  }
+
+  @UseGuards(JWTGuard)
+  @Delete('item')
+  public async removeItem(
+    @Body() itemToRemove: ChangeItemDto,
+    @Res() res: Response
+  ) {
+    await this.menuService.removeItem(itemToRemove)
+    const updatedMenu = await this.menuService.fetchMenuFromFile()
+    return res
+      .status(HttpStatus.OK)
+      .json(updatedMenu.items[itemToRemove.category])
+  }
+
+  @UseGuards(JWTGuard)
+  @Put('item/moveItemUp')
+  public async moveItemUp(
+    @Body() itemToMove: ChangeItemDto,
+    @Res() res: Response
+  ) {
+    await this.menuService.moveItemUp(itemToMove)
+    const updatedMenu = await this.menuService.fetchMenuFromFile()
+    return res
+      .status(HttpStatus.OK)
+      .json(updatedMenu.items[itemToMove.category])
+  }
+
+  @UseGuards(JWTGuard)
+  @Put('item/moveItemDown')
+  public async moveItemDown(
+    @Body() itemToMove: ChangeItemDto,
+    @Res() res: Response
+  ) {
+    await this.menuService.moveItemDown(itemToMove)
+    const updatedMenu = await this.menuService.fetchMenuFromFile()
+    return res
+      .status(HttpStatus.OK)
+      .json(updatedMenu.items[itemToMove.category])
   }
 }
