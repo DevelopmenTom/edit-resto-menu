@@ -6,12 +6,11 @@ import {
   HttpStatus,
   Post,
   Put,
-  Res,
-  UseGuards
+  Res
 } from '@nestjs/common'
 import { Response } from 'express'
 
-import { JWTGuard } from '../auth/jwt.guard'
+import { Public } from '../auth/decorators/Public'
 import { ChangeItemDto } from './dto/changeItem.dto'
 import { NewItemDto } from './dto/newItem.dto'
 import { MenuService } from './menu.service'
@@ -20,6 +19,7 @@ import { MenuService } from './menu.service'
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
+  @Public()
   @Get('/')
   public async getMenu(@Res() res: Response) {
     return res
@@ -27,7 +27,6 @@ export class MenuController {
       .json(await this.menuService.fetchMenuFromFile())
   }
 
-  @UseGuards(JWTGuard)
   @Post('category')
   public async addCategory(
     @Body() { newCategoryName }: { newCategoryName: string },
@@ -38,7 +37,6 @@ export class MenuController {
     return res.status(HttpStatus.CREATED).json(updatedMenu.categories)
   }
 
-  @UseGuards(JWTGuard)
   @Delete('category')
   public async removeCategoey(
     @Body() { categoryToRemove }: { categoryToRemove: string },
@@ -49,7 +47,6 @@ export class MenuController {
     return res.status(HttpStatus.OK).json(updatedMenu.categories)
   }
 
-  @UseGuards(JWTGuard)
   @Put('category/moveCategoryForward')
   public async moveCategoryForward(
     @Body() { categoryToMove }: { categoryToMove: string },
@@ -60,7 +57,6 @@ export class MenuController {
     return res.status(HttpStatus.OK).json(updatedMenu.categories)
   }
 
-  @UseGuards(JWTGuard)
   @Put('category/moveCategoryBack')
   public async moveCategoryBack(
     @Body() { categoryToMove }: { categoryToMove: string },
@@ -71,7 +67,6 @@ export class MenuController {
     return res.status(HttpStatus.OK).json(updatedMenu.categories)
   }
 
-  @UseGuards(JWTGuard)
   @Post('item')
   public async addItem(@Body() newItem: NewItemDto, @Res() res: Response) {
     await this.menuService.addItem(newItem)
@@ -81,7 +76,6 @@ export class MenuController {
       .json(updatedMenu.items[newItem.category])
   }
 
-  @UseGuards(JWTGuard)
   @Delete('item')
   public async removeItem(
     @Body() itemToRemove: ChangeItemDto,
@@ -94,7 +88,6 @@ export class MenuController {
       .json(updatedMenu.items[itemToRemove.category])
   }
 
-  @UseGuards(JWTGuard)
   @Put('item/moveItemUp')
   public async moveItemUp(
     @Body() itemToMove: ChangeItemDto,
@@ -107,7 +100,6 @@ export class MenuController {
       .json(updatedMenu.items[itemToMove.category])
   }
 
-  @UseGuards(JWTGuard)
   @Put('item/moveItemDown')
   public async moveItemDown(
     @Body() itemToMove: ChangeItemDto,
