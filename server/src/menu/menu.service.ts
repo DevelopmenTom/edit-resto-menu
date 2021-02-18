@@ -2,6 +2,8 @@ import { HttpException, Injectable } from '@nestjs/common'
 import * as fs from 'fs'
 import { join } from 'path'
 
+import { ChangeItemDto } from './dto/changeItem.dto'
+import { NewItemDto } from './dto/newItem.dto'
 import { IMenu } from './interfaces/IMenu'
 
 @Injectable()
@@ -72,6 +74,97 @@ export class MenuService {
       currentMenu.categories.splice(indexOfCategoryToMove, 1)[0]
     )
 
+    await this.saveMenuToFile(currentMenu)
+  }
+
+  public async addItem(newItem: NewItemDto): Promise<void> {
+    const currentMenu = await this.fetchMenuFromFile()
+
+    const existingItems = currentMenu.items[newItem.category].filter(
+      (item) => item.name === newItem.name
+    )
+    const itemAlreadyExistsInCategory = existingItems.length !== 0
+    if (itemAlreadyExistsInCategory) {
+      throw new HttpException(
+        'this item name already exists in this category',
+        400
+      )
+    }
+
+    const { category, ...rest } = newItem
+
+    const updatedMenu: IMenu = {
+      ...currentMenu,
+      items: {
+        ...currentMenu.items,
+        [category]: [...currentMenu.items[category], rest]
+      }
+    }
+    await this.saveMenuToFile(updatedMenu)
+  }
+
+  public async removeItem(itemToRemove: ChangeItemDto): Promise<void> {
+    const currentMenu = await this.fetchMenuFromFile()
+
+    const { category, name } = itemToRemove
+
+    const updatedMenu: IMenu = {
+      ...currentMenu,
+      items: {
+        ...currentMenu.items,
+        [category]: currentMenu.items[category].filter(
+          (item) => item.name !== name
+        )
+      }
+    }
+    await this.saveMenuToFile(updatedMenu)
+  }
+
+  public async moveItemUp(itemToMove: ChangeItemDto): Promise<void> {
+    const currentMenu = await this.fetchMenuFromFile()
+    const { category, name } = itemToMove
+
+    const fullItemToMove = currentMenu.items[category].filter(
+      (item) => item.name === name
+    )[0]
+    const indexOfItemToMove = currentMenu.items[category].indexOf(
+      fullItemToMove
+    )
+
+    if (indexOfItemToMove === 0) {
+      return
+    }
+
+    const itemItself = currentMenu.items[category].splice(
+      indexOfItemToMove,
+      1
+    )[0]
+    currentMenu.items[category].splice(indexOfItemToMove - 1, 0, itemItself)
+    await this.saveMenuToFile(currentMenu)
+  }
+
+  public async moveItemDown(itemToMove: ChangeItemDto): Promise<void> {
+    const currentMenu = await this.fetchMenuFromFile()
+    const { category, name } = itemToMove
+
+    const fullItemToMove = currentMenu.items[category].filter(
+      (item) => item.name === name
+    )[0]
+    const indexOfItemToMove = currentMenu.items[category].indexOf(
+      fullItemToMove
+    )
+
+    const itemIsAlreadyLast =
+      indexOfItemToMove === currentMenu.items[category].length - 1
+    if (itemIsAlreadyLast) {
+      return
+    }
+
+    const itemItself = currentMenu.items[category].splice(
+      indexOfItemToMove,
+      1
+    )[0]
+    currentMenu.items[category].splice(indexOfItemToMove + 1, 0, itemItself)
     await this.saveMenuToFile(currentMenu)
   }
 

@@ -2,11 +2,14 @@ import { ConfigModule } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 import { join } from 'path'
 
+import { ChangeItemDto } from './dto/changeItem.dto'
+import { NewItemDto } from './dto/newItem.dto'
 import { IMenu } from './interfaces/IMenu'
 import { MenuService } from './menu.service'
 import {
   createMockMenu,
-  existingCategoryName
+  existingCategoryName,
+  existingItemName
 } from './testHelpers/createMockMenu'
 import { readMockMenu } from './testHelpers/readMockMenu'
 
@@ -114,6 +117,158 @@ describe('MenuService', () => {
 
       const updatedMenu = await readMockMenu()
       expect(updatedMenu.categories).toEqual(['first', 'second', 'third'])
+    })
+  })
+
+  describe('#addItem', () => {
+    beforeEach(async () => {
+      await createMockMenu()
+    })
+
+    it('throws an error when supplied with an item name which already exists in the category', async () => {
+      const newItem: NewItemDto = {
+        category: existingCategoryName,
+        description: 'this name already exists in this category',
+        name: existingItemName,
+        price: '100'
+      }
+
+      await expect(service.addItem(newItem)).rejects.toThrow(
+        'this item name already exists in this category'
+      )
+    })
+
+    it('adds an item to a specific category when item name does not exists in the category', async () => {
+      const newItem: NewItemDto = {
+        category: existingCategoryName,
+        description: 'a new item',
+        name: 'newItem',
+        price: '100'
+      }
+
+      await service.addItem(newItem)
+      const updatedMenu = await readMockMenu()
+      const theItemAdded = updatedMenu.items[existingCategoryName].filter(
+        (item) => item.name === newItem.name
+      )
+      expect(theItemAdded.length).toBe(1)
+    })
+  })
+
+  describe('#removeItem', () => {
+    it('removes the requested item from the requested category', async () => {
+      const itemToRemove: ChangeItemDto = {
+        category: existingCategoryName,
+        name: existingItemName
+      }
+
+      await service.removeItem(itemToRemove)
+
+      const updatedMenu = await readMockMenu()
+      const removedItem = updatedMenu.items[existingCategoryName].filter(
+        (item) => item.name === existingItemName
+      )
+      expect(removedItem.length).toBe(0)
+    })
+  })
+
+  describe('#moveItemUp', () => {
+    beforeEach(async () => {
+      const categoryWithThreeItems: IMenu = {
+        categories: [existingCategoryName],
+        items: {
+          [existingCategoryName]: [
+            { description: 'the first item!', name: 'firstItem', price: '1' },
+            { description: 'the second item!', name: 'secondItem', price: '2' },
+            { description: 'the third item!', name: 'thirdItem', price: '3' }
+          ]
+        }
+      }
+      await createMockMenu(categoryWithThreeItems)
+    })
+
+    it('has no effect when the requested item is already first in the array', async () => {
+      const itemToMove: ChangeItemDto = {
+        category: existingCategoryName,
+        name: 'firstItem'
+      }
+      await service.moveItemUp(itemToMove)
+
+      const updatedMenu = await readMockMenu()
+      const itemsInCategory = updatedMenu.items[existingCategoryName]
+
+      expect(itemsInCategory).toEqual([
+        { description: 'the first item!', name: 'firstItem', price: '1' },
+        { description: 'the second item!', name: 'secondItem', price: '2' },
+        { description: 'the third item!', name: 'thirdItem', price: '3' }
+      ])
+    })
+
+    it('moves the requested item one place backwards in the category array', async () => {
+      const itemToMove: ChangeItemDto = {
+        category: existingCategoryName,
+        name: 'secondItem'
+      }
+      await service.moveItemUp(itemToMove)
+
+      const updatedMenu = await readMockMenu()
+      const itemsInCategory = updatedMenu.items[existingCategoryName]
+
+      expect(itemsInCategory).toEqual([
+        { description: 'the second item!', name: 'secondItem', price: '2' },
+        { description: 'the first item!', name: 'firstItem', price: '1' },
+        { description: 'the third item!', name: 'thirdItem', price: '3' }
+      ])
+    })
+  })
+
+  describe('#moveItemDown', () => {
+    beforeEach(async () => {
+      const categoryWithThreeItems: IMenu = {
+        categories: [existingCategoryName],
+        items: {
+          [existingCategoryName]: [
+            { description: 'the first item!', name: 'firstItem', price: '1' },
+            { description: 'the second item!', name: 'secondItem', price: '2' },
+            { description: 'the third item!', name: 'thirdItem', price: '3' }
+          ]
+        }
+      }
+      await createMockMenu(categoryWithThreeItems)
+    })
+
+    it('has no effect when the requested item is already last in the array', async () => {
+      const itemToMove: ChangeItemDto = {
+        category: existingCategoryName,
+        name: 'thirdItem'
+      }
+      await service.moveItemDown(itemToMove)
+
+      const updatedMenu = await readMockMenu()
+      const itemsInCategory = updatedMenu.items[existingCategoryName]
+
+      expect(itemsInCategory).toEqual([
+        { description: 'the first item!', name: 'firstItem', price: '1' },
+        { description: 'the second item!', name: 'secondItem', price: '2' },
+        { description: 'the third item!', name: 'thirdItem', price: '3' }
+      ])
+    })
+
+    it('moves the requested item one place forwards in the category array', async () => {
+      const itemToMove: ChangeItemDto = {
+        category: existingCategoryName,
+        name: 'secondItem'
+      }
+      await service.moveItemDown(itemToMove)
+
+      const updatedMenu = await readMockMenu()
+      const itemsInCategory = updatedMenu.items[existingCategoryName]
+
+      expect(itemsInCategory).toEqual([
+        { description: 'the first item!', name: 'firstItem', price: '1' },
+        { description: 'the third item!', name: 'thirdItem', price: '3' },
+        { description: 'the second item!', name: 'secondItem', price: '2' }
+      ])
     })
   })
 })

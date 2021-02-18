@@ -4,6 +4,7 @@ import { join } from 'path'
 import { IMenu } from '../interfaces/IMenu'
 
 export const existingCategoryName = 'firstCategory'
+export const existingItemName = 'firstItem'
 
 const defaultMockMenu: IMenu = {
   categories: [existingCategoryName, 'secondCategory'],
@@ -16,6 +17,7 @@ const defaultMockMenu: IMenu = {
     ]
   }
 }
+
 export const createMockMenu = (mockMenu?: IMenu) =>
   fs.promises.writeFile(
     join(process.cwd(), 'src', 'menu', 'assets', process.env.MENU_FILENAME),

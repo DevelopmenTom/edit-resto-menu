@@ -1,1 +1,1 @@
-{"categories":["first","second","third"],"items":{"first":[],"second":[],"third":[]}}
+{"categories":["firstCategory"],"items":{"firstCategory":[{"description":"the first item!","name":"firstItem","price":"1"},{"description":"the third item!","name":"thirdItem","price":"3"},{"description":"the second item!","name":"secondItem","price":"2"}]}}

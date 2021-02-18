@@ -5,7 +5,6 @@ export interface IMenu {
       name: string
       description: string
       price: string
-      imageURL?: string
     }>
   }
 }
