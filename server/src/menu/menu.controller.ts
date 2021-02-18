@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Post,
+  Put,
   Res,
   UseGuards
 } from '@nestjs/common'
@@ -32,5 +34,38 @@ export class MenuController {
     await this.menuService.addCategory(newCategoryName)
     const updatedMenu = await this.menuService.fetchMenuFromFile()
     return res.status(HttpStatus.CREATED).json(updatedMenu.categories)
+  }
+
+  @UseGuards(JWTGuard)
+  @Delete('category')
+  public async removeCategoey(
+    @Body() { categoryToRemove }: { categoryToRemove: string },
+    @Res() res: Response
+  ) {
+    await this.menuService.removeCategoey(categoryToRemove)
+    const updatedMenu = await this.menuService.fetchMenuFromFile()
+    return res.status(HttpStatus.OK).json(updatedMenu.categories)
+  }
+
+  @UseGuards(JWTGuard)
+  @Put('category/moveCategoryForward')
+  public async moveCategoryForward(
+    @Body() { categoryToMove }: { categoryToMove: string },
+    @Res() res: Response
+  ) {
+    await this.menuService.moveCategoryForward(categoryToMove)
+    const updatedMenu = await this.menuService.fetchMenuFromFile()
+    return res.status(HttpStatus.OK).json(updatedMenu.categories)
+  }
+
+  @UseGuards(JWTGuard)
+  @Put('category/moveCategoryBack')
+  public async moveCategoryBack(
+    @Body() { categoryToMove }: { categoryToMove: string },
+    @Res() res: Response
+  ) {
+    await this.menuService.moveCategoryBack(categoryToMove)
+    const updatedMenu = await this.menuService.fetchMenuFromFile()
+    return res.status(HttpStatus.OK).json(updatedMenu.categories)
   }
 }

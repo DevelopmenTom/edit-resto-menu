@@ -1,1 +1,1 @@
-{"categories":["firstCategory"],"items":{"firstCategory":[{"description":"the first item!","name":"firstItem","price":"1"},{"description":"the third item!","name":"thirdItem","price":"3"},{"description":"the second item!","name":"secondItem","price":"2"}]}}
+{"categories":["secondCategory","firstCategory"],"items":{"firstCategory":[{"description":"the first item!","name":"firstItem","price":"66"}],"secondCategory":[{"description":"second category item!","name":"firstItem","price":"100"}]}}

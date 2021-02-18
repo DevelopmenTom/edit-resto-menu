@@ -5,7 +5,10 @@ import { join } from 'path'
 import * as request from 'supertest'
 
 import { AppModule } from './app.module'
-import { createMockMenu } from './menu/testHelpers/createMockMenu'
+import {
+  createMockMenu,
+  existingCategoryName
+} from './menu/testHelpers/createMockMenu'
 
 describe('AppController (e2e)', () => {
   let app
@@ -80,6 +83,59 @@ describe('AppController (e2e)', () => {
         'firstCategory',
         'secondCategory',
         'newCatgory'
+      ])
+    })
+  })
+
+  describe('/menu/category (Delete)', () => {
+    it('gets 200 and the list of categories without the removed one', async () => {
+      await createMockMenu()
+      const token = await getToken()
+
+      const response = await request(app.getHttpServer())
+        .delete('/menu/category')
+        .send({ categoryToRemove: existingCategoryName })
+        .set('Authorization', `bearer ${token}`)
+        .expect(200)
+
+      expect(JSON.parse(response.text).includes(existingCategoryName)).toBe(
+        false
+      )
+    })
+  })
+
+  describe('/menu/category/moveCategoryForward (Put)', () => {
+    it('gets 200 and the list of categories with the category moved forward', async () => {
+      await createMockMenu()
+      const token = await getToken()
+
+      const response = await request(app.getHttpServer())
+        .put('/menu/category/moveCategoryForward')
+        .send({ categoryToMove: existingCategoryName })
+        .set('Authorization', `bearer ${token}`)
+        .expect(200)
+
+      expect(JSON.parse(response.text)).toEqual([
+        'secondCategory',
+        'firstCategory'
+      ])
+    })
+  })
+
+  describe('/menu/category/moveCategoryBack (Put)', () => {
+    it('gets 200 and the list of categories with the category moved back', async () => {
+      await createMockMenu()
+      const token = await getToken()
+
+      const response = await request(app.getHttpServer())
+        .put('/menu/category/moveCategoryBack')
+        .send({ categoryToMove: 'secondCategory' })
+        .set('Authorization', `bearer ${token}`)
+        .expect(200)
+
+      expect(JSON.parse(response.text)).toEqual([
+        'secondCategory',
+        'firstCategory'
       ])
     })
   })
