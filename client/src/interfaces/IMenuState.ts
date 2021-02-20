@@ -1,4 +1,4 @@
-import { CategoryItems } from './CategoryItems'
+import { ICategoryItem } from './ICategoryItem'
 
 export interface IMenuState {
   activeCategory: string
@@ -6,7 +6,7 @@ export interface IMenuState {
   editMode: boolean
   error?: string
   items: {
-    [categoryName: string]: CategoryItems
+    [categoryName: string]: ICategoryItem[]
   }
   sending: boolean
 }

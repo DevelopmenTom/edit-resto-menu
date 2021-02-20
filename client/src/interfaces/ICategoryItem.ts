@@ -1,5 +1,5 @@
-export type CategoryItems = Array<{
+export interface ICategoryItem {
   name: string
   description: string
   price: string
-}>
+}

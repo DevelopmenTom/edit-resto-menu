@@ -1,27 +1,27 @@
-import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons'
-import { Button, HStack, VStack } from '@chakra-ui/react'
+import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from '@chakra-ui/icons'
+import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { Dispatch, useContext, useState } from 'react'
 
 import { createAuthApiRequest } from '../helpers/createApiRequest'
+import { ICategoryItem } from '../interfaces/ICategoryItem'
 import { IMenuState } from '../interfaces/IMenuState'
 import { IReducerAction } from '../interfaces/IReducerAction'
 import { MenuContext } from '../pages'
 import {
-  setActiveCategory,
   setError,
   toggleEditMode,
   toggleSending,
-  updateCategories
+  updateItems
 } from '../store/actions'
 import { ConfirmDelete } from './ConfirmDelete'
 
 export type Props = {
-  categoryName: string
+  item: ICategoryItem
   isFirst: boolean
   isLast: boolean
 }
 
-export const Category = ({ categoryName, isFirst, isLast }: Props) => {
+export const Item = ({ item, isFirst, isLast }: Props) => {
   const { dispatch, state } = useContext(MenuContext) as {
     state: IMenuState
     dispatch: Dispatch<IReducerAction>
@@ -29,7 +29,7 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
 
   const [confirmDelete, setConfirmDelete] = useState(false)
 
-  const { editMode } = state
+  const { activeCategory, editMode } = state
 
   const tokenExpired = () => {
     dispatch(setError('Session Expired, please login again'))
@@ -37,19 +37,20 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
     localStorage.removeItem('token')
   }
 
-  const moveBack = async () => {
+  const moveUp = async () => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const moveBackRequest = createAuthApiRequest({
-      body: { categoryToMove: categoryName },
-      endpoint: 'menu/category/moveCategoryBack',
+    const moveUpRequest = createAuthApiRequest({
+      body: { category: activeCategory, name: item.name },
+      endpoint: 'menu/item/moveItemUp',
       method: 'PUT'
     })
 
     try {
-      const rawResponse = await moveBackRequest
+      const rawResponse = await moveUpRequest
       const response = await rawResponse.json()
+
       if (response.message === 'Token expired') {
         tokenExpired()
         return
@@ -64,7 +65,7 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
         return
       }
 
-      dispatch(updateCategories(response))
+      dispatch(updateItems(activeCategory, response))
     } catch (err) {
       dispatch(setError(err.message))
     } finally {
@@ -72,19 +73,20 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
     }
   }
 
-  const moveForward = async () => {
+  const moveDown = async () => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const moveForwardRequest = createAuthApiRequest({
-      body: { categoryToMove: categoryName },
-      endpoint: 'menu/category/moveCategoryForward',
+    const moveDownRequest = createAuthApiRequest({
+      body: { category: activeCategory, name: item.name },
+      endpoint: 'menu/item/moveItemDown',
       method: 'PUT'
     })
 
     try {
-      const rawResponse = await moveForwardRequest
+      const rawResponse = await moveDownRequest
       const response = await rawResponse.json()
+
       if (response.message === 'Token expired') {
         tokenExpired()
         return
@@ -99,7 +101,7 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
         return
       }
 
-      dispatch(updateCategories(response))
+      dispatch(updateItems(activeCategory, response))
     } catch (err) {
       dispatch(setError(err.message))
     } finally {
@@ -107,19 +109,19 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
     }
   }
 
-  const deleteCategory = async () => {
+  const deleteItem = async () => {
     setConfirmDelete(false)
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const deleteCategoryRequest = await createAuthApiRequest({
-      body: { categoryToRemove: categoryName },
-      endpoint: 'menu/category',
+    const deleteItemRequest = await createAuthApiRequest({
+      body: { category: activeCategory, name: item.name },
+      endpoint: 'menu/item',
       method: 'DELETE'
     })
 
     try {
-      const rawResponse = await deleteCategoryRequest
+      const rawResponse = await deleteItemRequest
       const response = await rawResponse.json()
       if (response.message === 'Token expired') {
         tokenExpired()
@@ -135,7 +137,7 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
         return
       }
 
-      dispatch(updateCategories(response))
+      dispatch(updateItems(activeCategory, response))
     } catch (err) {
       dispatch(setError(err.message))
     } finally {
@@ -144,31 +146,32 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
   }
 
   return (
-    <VStack spacing={'5px'}>
-      <HStack visibility={editMode ? 'visible' : 'hidden'} spacing={'2px'}>
-        <ArrowBackIcon
-          onClick={() => editMode && moveBack()}
+    <HStack spacing={'2px'}>
+      <VStack visibility={editMode ? 'visible' : 'hidden'} spacing={'2px'}>
+        <ArrowUpIcon
+          onClick={() => editMode && moveUp()}
           visibility={editMode && !isFirst ? 'visible' : 'hidden'}
         />
         <DeleteIcon onClick={() => editMode && setConfirmDelete(true)} />
-        <ArrowForwardIcon
-          onClick={() => editMode && moveForward()}
+        <ArrowDownIcon
+          onClick={() => editMode && moveDown()}
           visibility={editMode && !isLast ? 'visible' : 'hidden'}
         />
-      </HStack>
-      <Button
-        onClick={() => dispatch(setActiveCategory(categoryName))}
-        variant={state.activeCategory === categoryName ? 'solid' : 'outline'}
-      >
-        {categoryName}
-      </Button>
+      </VStack>
+
+      <Box key={item.name}>
+        <Heading>{item.name}</Heading>
+        <Text>
+          {item.description} / <Text as={'span'}>{item.price}</Text>
+        </Text>
+      </Box>
       {confirmDelete && (
         <ConfirmDelete
-          message={`Delete "${categoryName}" and all its items?`}
+          message={`Delete "${item.name}"?`}
           onClose={() => setConfirmDelete(false)}
-          onDelete={() => deleteCategory()}
+          onDelete={() => deleteItem()}
         />
       )}
-    </VStack>
+    </HStack>
   )
 }

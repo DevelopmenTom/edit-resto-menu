@@ -1,3 +1,4 @@
+import { ICategoryItem } from '../interfaces/ICategoryItem'
 import { IMenu } from '../interfaces/IMenu'
 import { IReducerAction } from '../interfaces/IReducerAction'
 
@@ -27,4 +28,12 @@ export const setError = (errorMessage: string): IReducerAction => ({
 export const updateCategories = (categories: string[]): IReducerAction => ({
   payload: categories,
   type: 'UPDATE_CATEGORIES'
+})
+
+export const updateItems = (
+  activeCategory: string,
+  items: ICategoryItem[]
+): IReducerAction => ({
+  payload: { activeCategory, items },
+  type: 'UPDATE_ITEMS'
 })

@@ -1,6 +1,9 @@
 import { IMenu } from '../interfaces/IMenu'
 import { IMenuState } from '../interfaces/IMenuState'
-import { IReducerAction } from '../interfaces/IReducerAction'
+import {
+  IReducerAction,
+  updateItemsPayload
+} from '../interfaces/IReducerAction'
 
 export const reducer = (state: IMenuState, action: IReducerAction) => {
   switch (action.type) {
@@ -21,6 +24,15 @@ export const reducer = (state: IMenuState, action: IReducerAction) => {
       return { ...state, error: action.payload as string }
     case 'UPDATE_CATEGORIES':
       return { ...state, categories: action.payload as string[] }
+    case 'UPDATE_ITEMS':
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [(action.payload as updateItemsPayload)
+            .activeCategory]: (action.payload as updateItemsPayload).items
+        }
+      }
     default:
       return state
   }
