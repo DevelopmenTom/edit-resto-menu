@@ -11,6 +11,10 @@ export const reducer = (state: IMenuState, action: IReducerAction) => {
         categories: (action.payload as IMenu).categories,
         items: (action.payload as IMenu).items
       }
+    case 'TOGGLE_EDIT_MODE':
+      return { ...state, editMode: !state.editMode }
+    case 'TOGGLE_SENDING':
+      return { ...state, sending: !state.sending }
     case 'SET_ACTIVE_CATEGORY':
       return { ...state, activeCategory: action.payload as string }
     default:

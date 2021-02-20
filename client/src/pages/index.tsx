@@ -6,10 +6,12 @@ import { Categories } from '../components/Categories'
 import { Container } from '../components/Container'
 import { DarkModeSwitch } from '../components/DarkModeSwitch'
 import { Items } from '../components/Items'
+import { Loader } from '../components/Loader'
+import { Login } from '../components/Login'
 import { IMenu } from '../interfaces/IMenu'
 import { IMenuState } from '../interfaces/IMenuState'
 import { IReducerAction } from '../interfaces/IReducerAction'
-import { loadInitialMenu } from '../store/actions'
+import { loadInitialMenu, toggleEditMode } from '../store/actions'
 import { initialState } from '../store/initialState'
 import { reducer } from '../store/reducer'
 
@@ -26,6 +28,11 @@ const Index = ({ initialMenu }: Props) => {
 
   useEffect(() => {
     dispatch(loadInitialMenu(initialMenu))
+
+    const token = localStorage.getItem('token')
+    if (token) {
+      dispatch(toggleEditMode())
+    }
   }, [initialMenu])
 
   const contextValue = useMemo(() => {
@@ -41,7 +48,9 @@ const Index = ({ initialMenu }: Props) => {
         <DarkModeSwitch />
         <Categories />
         <Items />
+        <Login />
       </Container>
+      {state.sending && <Loader />}
     </MenuContext.Provider>
   )
 }
