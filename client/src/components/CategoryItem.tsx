@@ -113,7 +113,6 @@ export const CategoryItem = ({ categoryName, isFirst, isLast }: Props) => {
     try {
       const rawResponse = await deleteCategoryRequest
       const response = await rawResponse.json()
-      console.log({ rawResponse, response })
       if (response.message === 'Token expired') {
         tokenExpired()
         return
