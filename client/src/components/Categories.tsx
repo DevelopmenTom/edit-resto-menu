@@ -4,6 +4,7 @@ import { Dispatch, useContext } from 'react'
 import { IMenuState } from '../interfaces/IMenuState'
 import { IReducerAction } from '../interfaces/IReducerAction'
 import { MenuContext } from '../pages/index'
+import { AddCategory } from './AddCategory'
 import { CategoryItem } from './CategoryItem'
 
 export const Categories = () => {
@@ -11,9 +12,15 @@ export const Categories = () => {
     state: IMenuState
     dispatch: Dispatch<IReducerAction>
   }
+
+  const wideScreenGridSize = () => {
+    return state.editMode
+      ? state.categories.length + 1
+      : state.categories.length
+  }
   return (
     <nav>
-      <SimpleGrid columns={[3, null, state.categories.length]} spacing={5}>
+      <SimpleGrid columns={[3, null, wideScreenGridSize()]} spacing={5}>
         {state.categories.map((category, index) => (
           <CategoryItem
             categoryName={category}
@@ -22,6 +29,7 @@ export const Categories = () => {
             key={category}
           />
         ))}
+        {state.editMode && <AddCategory />}
       </SimpleGrid>
     </nav>
   )
