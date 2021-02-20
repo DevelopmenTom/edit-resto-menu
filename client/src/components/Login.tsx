@@ -27,7 +27,7 @@ export const Login = () => {
   }
 
   const onKeyPress = (event: KeyboardEvent) => {
-    setError('')
+    dispatch(setError(''))
     if (event.key === 'Enter') {
       login()
     }
