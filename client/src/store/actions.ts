@@ -18,3 +18,13 @@ export const setActiveCategory = (categoryName: string): IReducerAction => ({
   payload: categoryName,
   type: 'SET_ACTIVE_CATEGORY'
 })
+
+export const setError = (errorMessage: string): IReducerAction => ({
+  payload: errorMessage,
+  type: 'SET_ERROR'
+})
+
+export const updateCategories = (categories: string[]): IReducerAction => ({
+  payload: categories,
+  type: 'UPDATE_CATEGORIES'
+})

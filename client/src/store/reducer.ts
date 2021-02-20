@@ -17,6 +17,10 @@ export const reducer = (state: IMenuState, action: IReducerAction) => {
       return { ...state, sending: !state.sending }
     case 'SET_ACTIVE_CATEGORY':
       return { ...state, activeCategory: action.payload as string }
+    case 'SET_ERROR':
+      return { ...state, error: action.payload as string }
+    case 'UPDATE_CATEGORIES':
+      return { ...state, categories: action.payload as string[] }
     default:
       return state
   }

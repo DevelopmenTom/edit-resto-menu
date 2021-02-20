@@ -1,3 +1,4 @@
+import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react'
@@ -46,6 +47,12 @@ const Index = ({ initialMenu }: Props) => {
           <title>Tom's Diner!</title>
         </Head>
         <DarkModeSwitch />
+        {state.error && (
+          <Alert status={'error'}>
+            <AlertIcon />
+            <AlertTitle mr={2}>{state.error}</AlertTitle>
+          </Alert>
+        )}
         <Categories />
         <Items />
         <Login />

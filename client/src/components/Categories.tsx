@@ -14,8 +14,13 @@ export const Categories = () => {
   return (
     <nav>
       <SimpleGrid columns={[3, null, state.categories.length]} spacing={5}>
-        {state.categories.map((category) => (
-          <CategoryItem categoryName={category} key={category} />
+        {state.categories.map((category, index) => (
+          <CategoryItem
+            categoryName={category}
+            isFirst={index === 0}
+            isLast={index === state.categories.length - 1}
+            key={category}
+          />
         ))}
       </SimpleGrid>
     </nav>

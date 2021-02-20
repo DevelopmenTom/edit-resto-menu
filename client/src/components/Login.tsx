@@ -1,18 +1,11 @@
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  Button,
-  HStack,
-  Input
-} from '@chakra-ui/react'
+import { Button, HStack, Input } from '@chakra-ui/react'
 import { Dispatch, FormEvent, KeyboardEvent, useContext, useState } from 'react'
 
 import { createApiRequest } from '../helpers/createApiRequest'
 import { IMenuState } from '../interfaces/IMenuState'
 import { IReducerAction } from '../interfaces/IReducerAction'
 import { MenuContext } from '../pages'
-import { toggleEditMode, toggleSending } from '../store/actions'
+import { setError, toggleEditMode, toggleSending } from '../store/actions'
 
 export const Login = () => {
   const { dispatch, state } = useContext(MenuContext) as {
@@ -20,7 +13,6 @@ export const Login = () => {
     dispatch: Dispatch<IReducerAction>
   }
 
-  const [error, setError] = useState<string | undefined>(undefined)
   const [formVisible, setFromVisible] = useState(false)
   const [inputValue, setInputValue] = useState<string>('')
 
@@ -42,6 +34,7 @@ export const Login = () => {
   }
 
   const login = async () => {
+    dispatch(setError(''))
     dispatch(toggleSending())
     const loginRequest = createApiRequest({
       body: { password: inputValue },
@@ -53,14 +46,14 @@ export const Login = () => {
       const rawResponse = await loginRequest
       const response = await rawResponse.json()
       if (!response.accessToken) {
-        setError(response.message)
+        dispatch(setError(response.message))
         return
       }
       localStorage.setItem('token', response.accessToken)
       dispatch(toggleEditMode())
       clearForm()
     } catch (err) {
-      setError(err.message)
+      dispatch(setError(err.message))
     } finally {
       dispatch(toggleSending())
     }
@@ -73,14 +66,6 @@ export const Login = () => {
 
   return (
     <>
-      {error && (
-        <HStack spacing="10px">
-          <Alert status={'error'}>
-            <AlertIcon />
-            <AlertTitle mr={2}>{error}</AlertTitle>
-          </Alert>
-        </HStack>
-      )}
       <HStack spacing="10px">
         <Button
           onClick={() => {

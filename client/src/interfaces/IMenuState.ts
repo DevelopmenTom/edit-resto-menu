@@ -4,6 +4,7 @@ export interface IMenuState {
   activeCategory: string
   categories: string[]
   editMode: boolean
+  error?: string
   items: {
     [categoryName: string]: CategoryItems
   }
