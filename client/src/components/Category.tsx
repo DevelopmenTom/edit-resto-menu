@@ -21,7 +21,7 @@ export type Props = {
   isLast: boolean
 }
 
-export const CategoryItem = ({ categoryName, isFirst, isLast }: Props) => {
+export const Category = ({ categoryName, isFirst, isLast }: Props) => {
   const { dispatch, state } = useContext(MenuContext) as {
     state: IMenuState
     dispatch: Dispatch<IReducerAction>

@@ -5,7 +5,7 @@ import { IMenuState } from '../interfaces/IMenuState'
 import { IReducerAction } from '../interfaces/IReducerAction'
 import { MenuContext } from '../pages/index'
 import { AddCategory } from './AddCategory'
-import { CategoryItem } from './CategoryItem'
+import { Category } from './Category'
 
 export const Categories = () => {
   const { state } = useContext(MenuContext) as {
@@ -22,7 +22,7 @@ export const Categories = () => {
     <nav>
       <SimpleGrid columns={[3, null, wideScreenGridSize()]} spacing={5}>
         {state.categories.map((category, index) => (
-          <CategoryItem
+          <Category
             categoryName={category}
             isFirst={index === 0}
             isLast={index === state.categories.length - 1}
