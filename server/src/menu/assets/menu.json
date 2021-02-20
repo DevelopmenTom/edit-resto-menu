@@ -27,13 +27,13 @@
     ],
     "Drinks": [
       {
-        "description": "For maximum classical enjoyment. 0.3 litter, glas bottle",
+        "description": "For maximum classical enjoyment. 0.3 liter, glas bottle",
         "name": "Coca-Cola",
         "price": "2.5"
       },
       {
         "description": "Half a liter of delight. 5.5% alk vol",
-        "name": "Tap Beer (ask fro brand)",
+        "name": "Tap Beer (ask for brand)",
         "price": "3"
       }
     ]
