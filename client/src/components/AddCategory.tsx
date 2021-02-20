@@ -95,7 +95,11 @@ export const AddCategory = () => {
     <>
       <VStack spacing={'5px'}>
         <TriangleDownIcon />
-        <Button onClick={() => setShowDialogue(true)} variant={'outline'}>
+        <Button
+          colorScheme="green"
+          onClick={() => setShowDialogue(true)}
+          variant={'outline'}
+        >
           Create
         </Button>
       </VStack>
