@@ -1,1 +1,41 @@
-{"categories":["Burgers","Sides","Drinks"],"items":{"Burgers":[{"description":"150 grams prime ground beef with Cheddar cheese","name":"Cheeseburger","price":"8"},{"description":"Rich vegan patty with peppers and spice AND vegan cheese","name":"Veganburger","price":"7"},{"description":"boo","name":"Bah1","price":"1"},{"description":"Boo","name":"Bah2","price":"4"},{"description":"24§","name":"Bd3","price":"2"}],"Sides":[{"description":"From premium potatoes with as many sauces as you'd like!","name":"French Fries","price":"3"},{"description":"Everyones favorite classic Coleslaw","name":"Slaw Salad","price":"3"}],"Drinks":[{"description":"For maximum classical enjoyment. 0.3 liter, glas bottle","name":"Coca-Cola","price":"2.5"},{"description":"Half a liter of delight. 5.5% alk vol","name":"Tap Beer (ask for brand)","price":"3"}]}}
+{
+  "categories": ["Burgers", "Sides", "Drinks"],
+  "items": {
+    "Burgers": [
+      {
+        "description": "150 grams prime ground beef with Cheddar cheese",
+        "name": "Cheeseburger",
+        "price": "8"
+      },
+      {
+        "description": "Rich vegan patty with peppers and spice AND vegan cheese",
+        "name": "Veganburger",
+        "price": "7"
+      }
+    ],
+    "Sides": [
+      {
+        "description": "From premium potatoes with as many sauces as you'd like!",
+        "name": "French Fries",
+        "price": "3"
+      },
+      {
+        "description": "Everyones favorite classic Coleslaw",
+        "name": "Slaw Salad",
+        "price": "3"
+      }
+    ],
+    "Drinks": [
+      {
+        "description": "For maximum classical enjoyment. 0.3 liter, glas bottle",
+        "name": "Coca-Cola",
+        "price": "2.5"
+      },
+      {
+        "description": "Half a liter of delight. 5.5% alk vol",
+        "name": "Tap Beer (ask for brand)",
+        "price": "3"
+      }
+    ]
+  }
+}
