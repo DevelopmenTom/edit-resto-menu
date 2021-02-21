@@ -2,7 +2,7 @@ import { Center, Heading, Text } from '@chakra-ui/react'
 
 export const InfoSection = () => {
   return (
-    <Center flexDirection={'column'} pt={'2rem'}>
+    <Center flexDirection={'column'}>
       <Heading py={'5px'} as={'h1'} size={'3xl'}>
         Tom's Diner
       </Heading>

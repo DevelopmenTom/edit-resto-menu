@@ -49,13 +49,13 @@ const Index = ({ initialMenu }: Props) => {
       </Head>
       <Container h={'100%'}>
         <main style={{ flex: '1' }}>
-          <DarkModeSwitch />
           {state.error && (
             <Alert zIndex={'2000'} status={'error'}>
               <AlertIcon />
               <AlertTitle mr={2}>{state.error}</AlertTitle>
             </Alert>
           )}
+          <DarkModeSwitch />
           <InfoSection />
           <Categories />
           <Items />
