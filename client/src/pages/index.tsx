@@ -43,6 +43,15 @@ const Index = ({ initialMenu }: Props) => {
 
   return (
     <MenuContext.Provider value={contextValue}>
+      <style jsx global>{`
+        html {
+          height: 100%;
+        }
+
+        #__next {
+          height: 100%;
+        }
+      `}</style>
       <Head>
         <title>Tom's Diner!</title>
         <meta charSet={'UTF-8'} />
