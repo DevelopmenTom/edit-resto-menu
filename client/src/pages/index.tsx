@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/react'
+import { Alert, AlertIcon, AlertTitle, Box } from '@chakra-ui/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react'
@@ -48,7 +48,7 @@ const Index = ({ initialMenu }: Props) => {
         <meta charSet={'UTF-8'} />
       </Head>
       <Container h={'100%'}>
-        <main style={{ flex: '1' }}>
+        <Box as={'main'} flex={'1'} w={[null, null, '40%']}>
           {state.error && (
             <Alert zIndex={'2000'} status={'error'}>
               <AlertIcon />
@@ -59,7 +59,7 @@ const Index = ({ initialMenu }: Props) => {
           <InfoSection />
           <Categories />
           <Items />
-        </main>
+        </Box>
         <footer style={{ flexShrink: 0 }}>
           <Login />
         </footer>
