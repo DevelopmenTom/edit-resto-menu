@@ -145,22 +145,25 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
 
   return (
     <VStack spacing={'5px'} pr={isLast ? '10px' : '0'}>
-      <HStack visibility={editMode ? 'visible' : 'hidden'} spacing={'3px'}>
-        <ArrowBackIcon
-          cursor={'pointer'}
-          onClick={() => editMode && moveBack()}
-          visibility={editMode && !isFirst ? 'visible' : 'hidden'}
-        />
-        <DeleteIcon
-          cursor={'pointer'}
-          onClick={() => editMode && setConfirmDelete(true)}
-        />
-        <ArrowForwardIcon
-          cursor={'pointer'}
-          onClick={() => editMode && moveForward()}
-          visibility={editMode && !isLast ? 'visible' : 'hidden'}
-        />
-      </HStack>
+      {editMode && (
+        <HStack pt={'10px'} spacing={'3px'}>
+          <ArrowBackIcon
+            cursor={'pointer'}
+            onClick={() => editMode && moveBack()}
+            visibility={!isFirst ? 'visible' : 'hidden'}
+          />
+          <DeleteIcon
+            cursor={'pointer'}
+            onClick={() => editMode && setConfirmDelete(true)}
+          />
+          <ArrowForwardIcon
+            cursor={'pointer'}
+            onClick={() => editMode && moveForward()}
+            visibility={!isLast ? 'visible' : 'hidden'}
+          />
+        </HStack>
+      )}
+
       <Button
         onClick={() => dispatch(setActiveCategory(categoryName))}
         variant={state.activeCategory === categoryName ? 'solid' : 'ghost'}

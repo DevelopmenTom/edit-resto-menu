@@ -6,6 +6,7 @@ import { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react'
 import { Categories } from '../components/Categories'
 import { Container } from '../components/Container'
 import { DarkModeSwitch } from '../components/DarkModeSwitch'
+import { InfoSection } from '../components/InfoSection'
 import { Items } from '../components/Items'
 import { Loader } from '../components/Loader'
 import { Login } from '../components/Login'
@@ -44,6 +45,7 @@ const Index = ({ initialMenu }: Props) => {
     <MenuContext.Provider value={contextValue}>
       <Head>
         <title>Tom's Diner!</title>
+        <meta charSet={'UTF-8'} />
       </Head>
       <Container h={'100%'}>
         <main style={{ flex: '1' }}>
@@ -54,6 +56,7 @@ const Index = ({ initialMenu }: Props) => {
               <AlertTitle mr={2}>{state.error}</AlertTitle>
             </Alert>
           )}
+          <InfoSection />
           <Categories />
           <Items />
         </main>

@@ -93,7 +93,7 @@ export const AddCategory = () => {
 
   return (
     <>
-      <VStack spacing={'5px'} pr={'10px'}>
+      <VStack pt={'10px'} spacing={'5px'} pr={'10px'}>
         <TriangleDownIcon />
         <Button
           colorScheme="green"
