@@ -57,7 +57,7 @@ const Index = ({ initialMenu }: Props) => {
         <meta charSet={'UTF-8'} />
       </Head>
       <Container h={'100%'} minHeight={'100vh'}>
-        <Box as={'main'} flex={'1'} w={[null, null, '40%']}>
+        <Box as={'main'} flex={'1'} minWidth={[null, null, '40%']}>
           {state.error && (
             <Alert zIndex={'2000'} status={'error'}>
               <AlertIcon />
