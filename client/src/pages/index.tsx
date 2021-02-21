@@ -42,20 +42,24 @@ const Index = ({ initialMenu }: Props) => {
 
   return (
     <MenuContext.Provider value={contextValue}>
-      <Container minH={'100vh'}>
-        <Head>
-          <title>Tom's Diner!</title>
-        </Head>
-        <DarkModeSwitch />
-        {state.error && (
-          <Alert status={'error'}>
-            <AlertIcon />
-            <AlertTitle mr={2}>{state.error}</AlertTitle>
-          </Alert>
-        )}
-        <Categories />
-        <Items />
-        <Login />
+      <Head>
+        <title>Tom's Diner!</title>
+      </Head>
+      <Container h={'100%'}>
+        <main style={{ flex: '1' }}>
+          <DarkModeSwitch />
+          {state.error && (
+            <Alert status={'error'}>
+              <AlertIcon />
+              <AlertTitle mr={2}>{state.error}</AlertTitle>
+            </Alert>
+          )}
+          <Categories />
+          <Items />
+        </main>
+        <footer style={{ flexShrink: 0 }}>
+          <Login />
+        </footer>
       </Container>
       {state.sending && <Loader />}
     </MenuContext.Provider>

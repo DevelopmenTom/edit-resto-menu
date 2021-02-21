@@ -6,7 +6,7 @@ import theme from '../theme'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS theme={theme}>
-      <Component {...pageProps} />
+      <Component style={{ height: '100%' }} {...pageProps} />
     </ChakraProvider>
   )
 }

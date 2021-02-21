@@ -25,11 +25,20 @@ export default class Document extends NextDocument {
           />
           <link rel="manifest" href="/static/site.webmanifest" />
         </Head>
-        <body>
+        <body style={{ height: '100%' }}>
           {/* Make Color mode to persists when you refresh the page. */}
           <ColorModeScript />
           <Main />
           <NextScript />
+          <style jsx global>{`
+            html {
+              height: 100%;
+            }
+
+            #__next {
+              height: 100%;
+            }
+          `}</style>
         </body>
       </Html>
     )

@@ -66,7 +66,7 @@ export const Login = () => {
 
   return (
     <>
-      <HStack spacing="10px">
+      <HStack spacing="10px" pb={'10px'}>
         <Button
           onClick={() => {
             if (state.editMode) {
