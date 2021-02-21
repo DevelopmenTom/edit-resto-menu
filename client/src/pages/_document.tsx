@@ -25,7 +25,7 @@ export default class Document extends NextDocument {
           />
           <link rel="manifest" href="/static/site.webmanifest" />
         </Head>
-        <body style={{ height: '100%' }}>
+        <body style={{ minHeight: '100%' }}>
           {/* Make Color mode to persists when you refresh the page. */}
           <ColorModeScript />
           <Main />
