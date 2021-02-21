@@ -48,6 +48,8 @@ cp example.env .env.local
 yarn run dev
 ```
 
+8.) visit http://localhost:3000 in your browser of choice
+
 ## Usage
 
 when the client loads it starts in view mode (just see the menu). There is a Login button in the footer, which then promps for a password matching the hash from the server's .env file. Send the password and you will be in Edit mode!
