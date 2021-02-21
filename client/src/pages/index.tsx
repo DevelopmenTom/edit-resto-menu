@@ -1,4 +1,10 @@
-import { Alert, AlertIcon, AlertTitle, Box } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  CloseButton
+} from '@chakra-ui/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react'
@@ -13,7 +19,7 @@ import { Login } from '../components/Login'
 import { IMenu } from '../interfaces/IMenu'
 import { IMenuState } from '../interfaces/IMenuState'
 import { IReducerAction } from '../interfaces/IReducerAction'
-import { loadInitialMenu, toggleEditMode } from '../store/actions'
+import { loadInitialMenu, setError, toggleEditMode } from '../store/actions'
 import { initialState } from '../store/initialState'
 import { reducer } from '../store/reducer'
 
@@ -64,9 +70,21 @@ const Index = ({ initialMenu }: Props) => {
           minWidth={[null, null, '40%']}
         >
           {state.error && (
-            <Alert zIndex={'2000'} status={'error'}>
+            <Alert
+              position={'fixed'}
+              top={'1rem'}
+              zIndex={'2000'}
+              status={'error'}
+              maxWidth={[null, null, '80%']}
+            >
               <AlertIcon />
               <AlertTitle mr={2}>{state.error}</AlertTitle>
+              <CloseButton
+                position="absolute"
+                right="2px"
+                top="2px"
+                onClick={() => dispatch(setError(''))}
+              />
             </Alert>
           )}
           <DarkModeSwitch />
