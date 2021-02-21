@@ -167,7 +167,7 @@ export const Item = ({ item, isFirst, isLast }: Props) => {
       <Box key={item.name}>
         <Heading size={'lg'}>{item.name}</Heading>
         <Text>
-          {item.description} / <Text as={'span'}>{item.price}</Text>
+          {item.description} | <Text as={'i'}>{item.price}</Text>
         </Text>
       </Box>
       {confirmDelete && (
