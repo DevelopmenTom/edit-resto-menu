@@ -92,10 +92,6 @@ export const AddItem = () => {
   }
 
   const updateInputValue = (event: FormEvent<HTMLInputElement>) => {
-    console.log({
-      name: event.currentTarget.name,
-      value: event.currentTarget.value
-    })
     setInputValues({
       ...inputValues,
       [event.currentTarget.name]: event.currentTarget.value
