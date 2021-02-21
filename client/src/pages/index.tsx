@@ -3,7 +3,8 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
-  CloseButton
+  CloseButton,
+  useColorMode
 } from '@chakra-ui/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
@@ -32,6 +33,7 @@ export const MenuContext = createContext<
 >(undefined)
 
 const Index = ({ initialMenu }: Props) => {
+  const { colorMode } = useColorMode()
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
@@ -46,6 +48,8 @@ const Index = ({ initialMenu }: Props) => {
   const contextValue = useMemo(() => {
     return { dispatch, state }
   }, [dispatch, state])
+
+  const AlertBgColor = { dark: 'red.900', light: 'red.200' }
 
   return (
     <MenuContext.Provider value={contextValue}>
@@ -71,6 +75,7 @@ const Index = ({ initialMenu }: Props) => {
         >
           {state.error && (
             <Alert
+              bg={AlertBgColor[colorMode]}
               position={'fixed'}
               top={'1rem'}
               zIndex={'2000'}
