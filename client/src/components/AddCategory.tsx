@@ -110,7 +110,7 @@ export const AddCategory = () => {
           onClose={() => closeDialogue()}
         >
           <AlertDialogOverlay>
-            <AlertDialogContent>
+            <AlertDialogContent m={'10px'}>
               <AlertDialogHeader fontSize="lg" fontWeight="bold">
                 Choose a non-existing name
               </AlertDialogHeader>

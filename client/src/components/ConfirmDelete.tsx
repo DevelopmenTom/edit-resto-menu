@@ -22,7 +22,7 @@ export const ConfirmDelete = ({ message, onClose, onDelete }: Props) => {
       onClose={onClose}
     >
       <AlertDialogOverlay>
-        <AlertDialogContent>
+        <AlertDialogContent m={'10px'}>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {message}
           </AlertDialogHeader>

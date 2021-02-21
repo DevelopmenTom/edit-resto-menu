@@ -125,7 +125,7 @@ export const AddItem = () => {
           onClose={() => closeDialogue()}
         >
           <AlertDialogOverlay>
-            <AlertDialogContent>
+            <AlertDialogContent m={'10px'}>
               <AlertDialogHeader fontSize="lg" fontWeight="bold">
                 All Fields are mandatory
               </AlertDialogHeader>
