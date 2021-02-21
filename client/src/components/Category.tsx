@@ -147,11 +147,16 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
     <VStack spacing={'5px'} pr={isLast ? '10px' : '0'}>
       <HStack visibility={editMode ? 'visible' : 'hidden'} spacing={'3px'}>
         <ArrowBackIcon
+          cursor={'pointer'}
           onClick={() => editMode && moveBack()}
           visibility={editMode && !isFirst ? 'visible' : 'hidden'}
         />
-        <DeleteIcon onClick={() => editMode && setConfirmDelete(true)} />
+        <DeleteIcon
+          cursor={'pointer'}
+          onClick={() => editMode && setConfirmDelete(true)}
+        />
         <ArrowForwardIcon
+          cursor={'pointer'}
           onClick={() => editMode && moveForward()}
           visibility={editMode && !isLast ? 'visible' : 'hidden'}
         />
