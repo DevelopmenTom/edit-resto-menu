@@ -144,8 +144,8 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
   }
 
   return (
-    <VStack spacing={'5px'}>
-      <HStack visibility={editMode ? 'visible' : 'hidden'} spacing={'2px'}>
+    <VStack spacing={'5px'} pr={isLast ? '10px' : '0'}>
+      <HStack visibility={editMode ? 'visible' : 'hidden'} spacing={'3px'}>
         <ArrowBackIcon
           onClick={() => editMode && moveBack()}
           visibility={editMode && !isFirst ? 'visible' : 'hidden'}
@@ -158,7 +158,7 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
       </HStack>
       <Button
         onClick={() => dispatch(setActiveCategory(categoryName))}
-        variant={state.activeCategory === categoryName ? 'solid' : 'outline'}
+        variant={state.activeCategory === categoryName ? 'solid' : 'ghost'}
       >
         {categoryName}
       </Button>

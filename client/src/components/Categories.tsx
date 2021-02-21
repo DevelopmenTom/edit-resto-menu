@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@chakra-ui/react'
+import { HStack } from '@chakra-ui/react'
 import { Dispatch, useContext } from 'react'
 
 import { IMenuState } from '../interfaces/IMenuState'
@@ -13,14 +13,9 @@ export const Categories = () => {
     dispatch: Dispatch<IReducerAction>
   }
 
-  const wideScreenGridSize = () => {
-    return state.editMode
-      ? state.categories.length + 1
-      : state.categories.length
-  }
   return (
     <nav>
-      <SimpleGrid columns={[3, null, wideScreenGridSize()]} spacing={5}>
+      <HStack p={'10px'} maxW={'100vw'} overflowX={['scroll', null, 'auto']}>
         {state.categories.map((category, index) => (
           <Category
             categoryName={category}
@@ -30,7 +25,7 @@ export const Categories = () => {
           />
         ))}
         {state.editMode && <AddCategory />}
-      </SimpleGrid>
+      </HStack>
     </nav>
   )
 }

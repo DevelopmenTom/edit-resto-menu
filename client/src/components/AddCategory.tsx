@@ -93,12 +93,12 @@ export const AddCategory = () => {
 
   return (
     <>
-      <VStack spacing={'5px'}>
+      <VStack spacing={'5px'} pr={'10px'}>
         <TriangleDownIcon />
         <Button
           colorScheme="green"
           onClick={() => setShowDialogue(true)}
-          variant={'outline'}
+          variant={'ghost'}
         >
           Create
         </Button>
