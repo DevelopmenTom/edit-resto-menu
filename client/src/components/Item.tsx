@@ -146,8 +146,8 @@ export const Item = ({ item, isFirst, isLast }: Props) => {
   }
 
   return (
-    <HStack spacing={'2px'}>
-      <VStack visibility={editMode ? 'visible' : 'hidden'} spacing={'2px'}>
+    <HStack p={'10px'} spacing={'10px'}>
+      <VStack visibility={editMode ? 'visible' : 'hidden'} spacing={'3px'}>
         <ArrowUpIcon
           onClick={() => editMode && moveUp()}
           visibility={editMode && !isFirst ? 'visible' : 'hidden'}
@@ -160,7 +160,7 @@ export const Item = ({ item, isFirst, isLast }: Props) => {
       </VStack>
 
       <Box key={item.name}>
-        <Heading>{item.name}</Heading>
+        <Heading size={'lg'}>{item.name}</Heading>
         <Text>
           {item.description} / <Text as={'span'}>{item.price}</Text>
         </Text>

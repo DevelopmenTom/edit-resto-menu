@@ -107,14 +107,14 @@ export const AddItem = () => {
 
   return (
     <>
-      <HStack spacing={'2px'}>
+      <HStack p={'10px'} spacing={'10px'}>
         <StarIcon />
         <Box
           color={'green'}
           cursor={'pointer'}
           onClick={() => setShowDialogue(true)}
         >
-          <Heading>Create Item</Heading>
+          <Heading size={'lg'}>Create Item</Heading>
           <Text>Click here to add new Item to the categoey</Text>
         </Box>
       </HStack>
