@@ -164,7 +164,7 @@ export const Item = ({ item, isFirst, isLast }: Props) => {
         />
       </VStack>
 
-      <Box key={item.name}>
+      <Box key={item.name} w={['80vw', null, '60vw']}>
         <Heading size={'lg'}>{item.name}</Heading>
         <Text>
           {item.description} | <Text as={'i'}>{item.price}</Text>
