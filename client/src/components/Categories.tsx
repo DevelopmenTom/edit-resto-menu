@@ -15,17 +15,28 @@ export const Categories = () => {
 
   return (
     <nav>
-      <HStack p={'10px'} maxW={'100vw'} overflowX={['scroll', null, 'auto']}>
-        {state.categories.map((category, index) => (
-          <Category
-            categoryName={category}
-            isFirst={index === 0}
-            isLast={index === state.categories.length - 1}
-            key={category}
-          />
-        ))}
-        {state.editMode && <AddCategory />}
-      </HStack>
+      <div
+        id="hide-scrollbar"
+        style={{ height: '95px', overflowY: 'hidden', width: '100%' }}
+      >
+        <HStack
+          p={'10px'}
+          maxW={'100vw'}
+          overflowX={'auto'}
+          overflowY={'hidden'}
+          paddingBottom={'30px'}
+        >
+          {state.categories.map((category, index) => (
+            <Category
+              categoryName={category}
+              isFirst={index === 0}
+              isLast={index === state.categories.length - 1}
+              key={category}
+            />
+          ))}
+          {state.editMode && <AddCategory />}
+        </HStack>
+      </div>
     </nav>
   )
 }
