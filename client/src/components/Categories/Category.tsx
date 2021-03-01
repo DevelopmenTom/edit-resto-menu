@@ -2,18 +2,18 @@ import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Button, HStack, VStack } from '@chakra-ui/react'
 import { Dispatch, useContext, useState } from 'react'
 
-import { createAuthApiRequest } from '../helpers/createApiRequest'
-import { IMenuState } from '../interfaces/IMenuState'
-import { IReducerAction } from '../interfaces/IReducerAction'
-import { MenuContext } from '../pages'
+import { createAuthApiRequest } from '../../helpers/createApiRequest'
+import { IMenuState } from '../../interfaces/IMenuState'
+import { IReducerAction } from '../../interfaces/IReducerAction'
+import { MenuContext } from '../../pages'
 import {
   setActiveCategory,
   setError,
   toggleEditMode,
   toggleSending,
   updateCategories
-} from '../store/actions'
-import { ConfirmDelete } from './ConfirmDelete'
+} from '../../store/actions'
+import { ConfirmDelete } from '../ConfirmDelete'
 
 export type Props = {
   categoryName: string

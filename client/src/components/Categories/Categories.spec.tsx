@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 
-import { MenuContext } from '../pages/index'
+import { MenuContext } from '../../pages/index'
 import { Categories } from './Categories'
 describe('Categories', () => {
   it('renderes all the categores passed from context', async () => {

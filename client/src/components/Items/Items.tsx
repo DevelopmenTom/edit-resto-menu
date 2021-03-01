@@ -1,9 +1,9 @@
 import { Dispatch, useContext } from 'react'
 
-import { IMenuState } from '../interfaces/IMenuState'
-import { IReducerAction } from '../interfaces/IReducerAction'
-import { MenuContext } from '../pages/index'
-import { AddItem } from './AddItem'
+import { IMenuState } from '../../interfaces/IMenuState'
+import { IReducerAction } from '../../interfaces/IReducerAction'
+import { MenuContext } from '../../pages/index'
+import { AddItem } from '../AddItem'
 import { Item } from './Item'
 
 export const Items = () => {

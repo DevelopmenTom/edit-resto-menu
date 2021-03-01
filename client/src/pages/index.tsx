@@ -10,11 +10,11 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react'
 
-import { Categories } from '../components/Categories'
+import { Categories } from '../components/Categories/Categories'
 import { Container } from '../components/Container'
 import { DarkModeSwitch } from '../components/DarkModeSwitch'
 import { InfoSection } from '../components/InfoSection'
-import { Items } from '../components/Items'
+import { Items } from '../components/Items/Items'
 import { Loader } from '../components/Loader'
 import { Login } from '../components/Login'
 import { IMenu } from '../interfaces/IMenu'
@@ -67,12 +67,7 @@ const Index = ({ initialMenu }: Props) => {
         <meta charSet={'UTF-8'} />
       </Head>
       <Container h={'100%'} minHeight={'100vh'}>
-        <Box
-          as={'main'}
-          flex={'1'}
-          maxWidth={[null, null, '80%']}
-          minWidth={[null, null, '40%']}
-        >
+        <Box as={'main'} flex={'1'} width={[null, null, '60vw']}>
           {state.error && (
             <Alert
               bg={AlertBgColor[colorMode]}

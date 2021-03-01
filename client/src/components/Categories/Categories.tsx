@@ -1,10 +1,10 @@
 import { HStack } from '@chakra-ui/react'
 import { Dispatch, useContext } from 'react'
 
-import { IMenuState } from '../interfaces/IMenuState'
-import { IReducerAction } from '../interfaces/IReducerAction'
-import { MenuContext } from '../pages/index'
-import { AddCategory } from './AddCategory'
+import { IMenuState } from '../../interfaces/IMenuState'
+import { IReducerAction } from '../../interfaces/IReducerAction'
+import { MenuContext } from '../../pages/index'
+import { AddCategory } from '../AddCategory'
 import { Category } from './Category'
 
 export const Categories = () => {

@@ -2,18 +2,18 @@ import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { Dispatch, useContext, useState } from 'react'
 
-import { createAuthApiRequest } from '../helpers/createApiRequest'
-import { ICategoryItem } from '../interfaces/ICategoryItem'
-import { IMenuState } from '../interfaces/IMenuState'
-import { IReducerAction } from '../interfaces/IReducerAction'
-import { MenuContext } from '../pages'
+import { createAuthApiRequest } from '../../helpers/createApiRequest'
+import { ICategoryItem } from '../../interfaces/ICategoryItem'
+import { IMenuState } from '../../interfaces/IMenuState'
+import { IReducerAction } from '../../interfaces/IReducerAction'
+import { MenuContext } from '../../pages'
 import {
   setError,
   toggleEditMode,
   toggleSending,
   updateItems
-} from '../store/actions'
-import { ConfirmDelete } from './ConfirmDelete'
+} from '../../store/actions'
+import { ConfirmDelete } from '../ConfirmDelete'
 
 export type Props = {
   item: ICategoryItem
