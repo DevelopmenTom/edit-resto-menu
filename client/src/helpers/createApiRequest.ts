@@ -14,15 +14,31 @@ export const createApiRequest = ({ body, endpoint, method }: Args) => {
   })
 }
 
-export const createAuthApiRequest = ({ body, endpoint, method }: Args) => {
+export const createAuthApiRequest = async <T>({
+  body,
+  endpoint,
+  method
+}: Args): Promise<T> => {
   const token = localStorage.getItem('token')
-  return fetch(`${process.env.NEXT_PUBLIC_API}/${endpoint}`, {
-    body: JSON.stringify(body),
-    headers: {
-      Accept: 'application/json',
-      Authorization: `bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    method
-  })
+
+  const rawResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_API}/${endpoint}`,
+    {
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        Authorization: `bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      method
+    }
+  )
+
+  const response = await rawResponse.json()
+
+  if (!rawResponse.ok || response.message === 'Token expired') {
+    throw new Error(response.message)
+  }
+
+  return response
 }

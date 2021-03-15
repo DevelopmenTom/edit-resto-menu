@@ -23,7 +23,7 @@ export const reducer = (state: IMenuState, action: IReducerAction) => {
     case 'SET_ERROR':
       return { ...state, error: action.payload as string }
     case 'UPDATE_CATEGORIES':
-      return { ...state, categories: action.payload as string[] }
+      return { ...state, categories: action.payload }
     case 'UPDATE_ITEMS':
       return {
         ...state,

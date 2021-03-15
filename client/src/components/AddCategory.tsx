@@ -47,34 +47,23 @@ export const AddCategory = () => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const createCategoryRequest = createAuthApiRequest({
-      body: { newCategoryName: inputValue },
-      endpoint: 'menu/category',
-      method: 'POST'
-    })
-
     try {
-      const rawResponse = await createCategoryRequest
-      const response = await rawResponse.json()
+      const categoryUpdate = await createAuthApiRequest<string[]>({
+        body: { newCategoryName: inputValue },
+        endpoint: 'menu/category',
+        method: 'POST'
+      })
 
-      if (response.message === 'Token expired') {
+      dispatch(updateCategories(categoryUpdate))
+      closeDialogue()
+    } catch (err) {
+      if (err.message === 'Token expired') {
         tokenExpired()
         return
       }
-
-      if (!rawResponse.ok) {
-        dispatch(
-          setError(
-            response.message || "oops! that didn't work, please try again"
-          )
-        )
-        return
-      }
-
-      dispatch(updateCategories(response))
-      closeDialogue()
-    } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(err.message || "oops! that didn't work, please try again")
+      )
     } finally {
       dispatch(toggleSending())
     }

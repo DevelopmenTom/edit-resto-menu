@@ -41,32 +41,22 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const moveBackRequest = createAuthApiRequest({
-      body: { categoryToMove: categoryName },
-      endpoint: 'menu/category/moveCategoryBack',
-      method: 'PUT'
-    })
-
     try {
-      const rawResponse = await moveBackRequest
-      const response = await rawResponse.json()
-      if (response.message === 'Token expired') {
+      const categoryUpdate = await createAuthApiRequest<string[]>({
+        body: { categoryToMove: categoryName },
+        endpoint: 'menu/category/moveCategoryBack',
+        method: 'PUT'
+      })
+
+      dispatch(updateCategories(categoryUpdate))
+    } catch (err) {
+      if (err.message === 'Token expired') {
         tokenExpired()
         return
       }
-
-      if (!rawResponse.ok) {
-        dispatch(
-          setError(
-            response.message || "oops! that didn't work, please try again"
-          )
-        )
-        return
-      }
-
-      dispatch(updateCategories(response))
-    } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(err.message || "oops! that didn't work, please try again")
+      )
     } finally {
       dispatch(toggleSending())
     }
@@ -76,32 +66,22 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const moveForwardRequest = createAuthApiRequest({
-      body: { categoryToMove: categoryName },
-      endpoint: 'menu/category/moveCategoryForward',
-      method: 'PUT'
-    })
-
     try {
-      const rawResponse = await moveForwardRequest
-      const response = await rawResponse.json()
-      if (response.message === 'Token expired') {
+      const categoryUpdate = await createAuthApiRequest<string[]>({
+        body: { categoryToMove: categoryName },
+        endpoint: 'menu/category/moveCategoryForward',
+        method: 'PUT'
+      })
+
+      dispatch(updateCategories(categoryUpdate))
+    } catch (err) {
+      if (err.message === 'Token expired') {
         tokenExpired()
         return
       }
-
-      if (!rawResponse.ok) {
-        dispatch(
-          setError(
-            response.message || "oops! that didn't work, please try again"
-          )
-        )
-        return
-      }
-
-      dispatch(updateCategories(response))
-    } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(err.message || "oops! that didn't work, please try again")
+      )
     } finally {
       dispatch(toggleSending())
     }
@@ -112,32 +92,22 @@ export const Category = ({ categoryName, isFirst, isLast }: Props) => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const deleteCategoryRequest = await createAuthApiRequest({
-      body: { categoryToRemove: categoryName },
-      endpoint: 'menu/category',
-      method: 'DELETE'
-    })
-
     try {
-      const rawResponse = await deleteCategoryRequest
-      const response = await rawResponse.json()
-      if (response.message === 'Token expired') {
+      const categoryUpdate = await createAuthApiRequest<string[]>({
+        body: { categoryToRemove: categoryName },
+        endpoint: 'menu/category',
+        method: 'DELETE'
+      })
+
+      dispatch(updateCategories(categoryUpdate))
+    } catch (err) {
+      if (err.message === 'Token expired') {
         tokenExpired()
         return
       }
-
-      if (!rawResponse.ok) {
-        dispatch(
-          setError(
-            response.message || "oops! that didn't work, please try again"
-          )
-        )
-        return
-      }
-
-      dispatch(updateCategories(response))
-    } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(err.message || "oops! that didn't work, please try again")
+      )
     } finally {
       dispatch(toggleSending())
     }

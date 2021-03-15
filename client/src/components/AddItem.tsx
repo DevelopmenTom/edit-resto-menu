@@ -16,6 +16,7 @@ import {
 import { Dispatch, FormEvent, useContext, useState } from 'react'
 
 import { createAuthApiRequest } from '../helpers/createApiRequest'
+import { ICategoryItem } from '../interfaces/ICategoryItem'
 import { IMenuState } from '../interfaces/IMenuState'
 import { IReducerAction } from '../interfaces/IReducerAction'
 import { MenuContext } from '../pages'
@@ -58,34 +59,23 @@ export const AddItem = () => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const createItemRequest = await createAuthApiRequest({
-      body: { ...inputValues, category: state.activeCategory },
-      endpoint: 'menu/item',
-      method: 'POST'
-    })
-
     try {
-      const rawResponse = await createItemRequest
-      const response = await rawResponse.json()
+      const itemsUpdate = await createAuthApiRequest<ICategoryItem[]>({
+        body: { ...inputValues, category: state.activeCategory },
+        endpoint: 'menu/item',
+        method: 'POST'
+      })
 
-      if (response.message === 'Token expired') {
+      dispatch(updateItems(state.activeCategory, itemsUpdate))
+      closeDialogue()
+    } catch (err) {
+      if (err.message === 'Token expired') {
         tokenExpired()
         return
       }
-
-      if (!rawResponse.ok) {
-        dispatch(
-          setError(
-            response.message || "oops! that didn't work, please try again"
-          )
-        )
-        return
-      }
-
-      dispatch(updateItems(state.activeCategory, response))
-      closeDialogue()
-    } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(err.message || "oops! that didn't work, please try again")
+      )
     } finally {
       dispatch(toggleSending())
     }

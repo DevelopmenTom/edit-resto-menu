@@ -41,33 +41,22 @@ export const Item = ({ item, isFirst, isLast }: Props) => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const moveUpRequest = createAuthApiRequest({
-      body: { category: activeCategory, name: item.name },
-      endpoint: 'menu/item/moveItemUp',
-      method: 'PUT'
-    })
-
     try {
-      const rawResponse = await moveUpRequest
-      const response = await rawResponse.json()
+      const itemsUpdate = await createAuthApiRequest<ICategoryItem[]>({
+        body: { category: activeCategory, name: item.name },
+        endpoint: 'menu/item/moveItemUp',
+        method: 'PUT'
+      })
 
-      if (response.message === 'Token expired') {
+      dispatch(updateItems(activeCategory, itemsUpdate))
+    } catch (err) {
+      if (err.message === 'Token expired') {
         tokenExpired()
         return
       }
-
-      if (!rawResponse.ok) {
-        dispatch(
-          setError(
-            response.message || "oops! that didn't work, please try again"
-          )
-        )
-        return
-      }
-
-      dispatch(updateItems(activeCategory, response))
-    } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(err.message || "oops! that didn't work, please try again")
+      )
     } finally {
       dispatch(toggleSending())
     }
@@ -77,33 +66,22 @@ export const Item = ({ item, isFirst, isLast }: Props) => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const moveDownRequest = createAuthApiRequest({
-      body: { category: activeCategory, name: item.name },
-      endpoint: 'menu/item/moveItemDown',
-      method: 'PUT'
-    })
-
     try {
-      const rawResponse = await moveDownRequest
-      const response = await rawResponse.json()
+      const itemsUpdate = await createAuthApiRequest<ICategoryItem[]>({
+        body: { category: activeCategory, name: item.name },
+        endpoint: 'menu/item/moveItemDown',
+        method: 'PUT'
+      })
 
-      if (response.message === 'Token expired') {
+      dispatch(updateItems(activeCategory, itemsUpdate))
+    } catch (err) {
+      if (err.message === 'Token expired') {
         tokenExpired()
         return
       }
-
-      if (!rawResponse.ok) {
-        dispatch(
-          setError(
-            response.message || "oops! that didn't work, please try again"
-          )
-        )
-        return
-      }
-
-      dispatch(updateItems(activeCategory, response))
-    } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(err.message || "oops! that didn't work, please try again")
+      )
     } finally {
       dispatch(toggleSending())
     }
@@ -114,32 +92,22 @@ export const Item = ({ item, isFirst, isLast }: Props) => {
     dispatch(toggleSending())
     dispatch(setError(''))
 
-    const deleteItemRequest = await createAuthApiRequest({
-      body: { category: activeCategory, name: item.name },
-      endpoint: 'menu/item',
-      method: 'DELETE'
-    })
-
     try {
-      const rawResponse = await deleteItemRequest
-      const response = await rawResponse.json()
-      if (response.message === 'Token expired') {
+      const itemsUpdate = await createAuthApiRequest<ICategoryItem[]>({
+        body: { category: activeCategory, name: item.name },
+        endpoint: 'menu/item',
+        method: 'DELETE'
+      })
+
+      dispatch(updateItems(activeCategory, itemsUpdate))
+    } catch (err) {
+      if (err.message === 'Token expired') {
         tokenExpired()
         return
       }
-
-      if (!rawResponse.ok) {
-        dispatch(
-          setError(
-            response.message || "oops! that didn't work, please try again"
-          )
-        )
-        return
-      }
-
-      dispatch(updateItems(activeCategory, response))
-    } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(err.message || "oops! that didn't work, please try again")
+      )
     } finally {
       dispatch(toggleSending())
     }
